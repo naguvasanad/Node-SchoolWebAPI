@@ -57,4 +57,24 @@ app.get("/students",(req,res)=>{
       })
     })
 
+    app.get("/DeleteStudent",(req,res)=>{
+        pool.getConnection(function(error,temcont){
+            if(!!error){
+                temcont.release();
+                console.log('Error',+error);
+            }else{
+                console.log('Connected');                
+                console.log(req.query.name);
+                temcont.query("delete from Students where Studentid="+parseInt(req.query.name),function(err,result,field){
+                    temcont.release();
+                    if(!!err){
+                        console.log('Error');
+                    }else{
+                        res.json(result);
+                    }
+                })
+            }
+        })
+    })
+
 app.listen(8080)
